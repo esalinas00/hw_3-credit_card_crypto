@@ -14,29 +14,32 @@ module DoubleTranspositionCipher
     # 3. sort rows in predictibly random way using key as seed
     # 4. sort columns of each row in predictibly random way
     # 5. return joined cyphertext
-    
     array_a = create_matrix(document)
     #shuffle the array
     array_a.shuffle!(random: Random.new(key))
-    array_a.each { |row| row.shuffle!(random: Random.new(key)) }
-    array_a.join("")
+    array_a.each { |row| row.shuffle!(random: Random.new(key)) }.join
   end
 
   def self.decrypt(ciphertext, key)
     # TODO: FILL THIS IN!
-    array_a = create_matrix(ciphertext)    
+    array_a = create_matrix(ciphertext)
     array_a.map! { |row| row.unshuffle(random: Random.new(key)) }
-    array_a = array_a.unshuffle(random: Random.new(key))
-    array_a.join("")
+    array_a.unshuffle(random: Random.new(key)).join
   end
 
   def self.create_matrix(document)
-    document = document.to_s.chars
-    a_len = (document.length ** 0.5).ceil
-    array_a = Array.new(a_len) do |i| 
-      i = Array.new(a_len) do |j|  
-        document[0] == nil ? ('a'..'z').to_a[rand(26)] : document.shift
-      end
+    matrix_size = (document.to_s.length ** 0.5).ceil
+
+    rows, cols = matrix_size, matrix_size
+    # create 2d array with value nil
+    grid = Array.new(rows) { Array.new(cols) }
+    # fill in array with garbage value 'a'
+    grid.map! { |row| row.map { |e| e = 'a' } }
+
+    document.to_s.chars.each_with_index.map do |c, i|
+      x, y = i.divmod(11)
+      grid[x][y] = c
     end
+    grid
   end
 end
