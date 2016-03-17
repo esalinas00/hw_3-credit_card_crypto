@@ -7,21 +7,10 @@ module SubstitutionCipher
     # Returns: String
     def self.encrypt(document, key)
       # TODO: encrypt string using caesar cipher
-
-      # readable version
-      # document.to_s.chars.map do |c|
-      #   if c.ord + key > 126
-      #     new_ord = 31 + (c.ord + key) - 126
-      #   else
-      #     new_ord = c.ord + key
-      #   end
-      # end
-
       document
         .to_s
         .chars
-        .map{ |c| c.ord + key > 126 ? 31 + (c.ord + key) - 126 : c.ord + key }
-        .map{ |o| o.chr }
+        .map{ |c| c.ord + key > 126 ? (31 + (c.ord + key) - 126).chr : (c.ord + key).chr }
         .join
     end
 
@@ -32,21 +21,10 @@ module SubstitutionCipher
     # Returns: String
     def self.decrypt(document, key)
       # TODO: decrypt string using caesar cipher
-
-      # readable version
-      # document.to_s.chars.map do |c|
-      #   if c.ord - key < 32
-      #     new_ord = 126 + (c.ord - key) - 31
-      #   else
-      #     new_ord = c.ord - key
-      #   end
-      # end
-
       document
         .to_s
         .chars
-        .map{ |c| c.ord - key < 32 ? 126 + (c.ord - key) - 31 : c.ord - key }
-        .map{ |o| o.chr }
+        .map{ |c| c.ord - key < 32 ? (126 + (c.ord - key) - 31).chr : (c.ord - key).chr }
         .join
     end
   end
@@ -68,8 +46,7 @@ module SubstitutionCipher
       document
         .to_s
         .chars
-        .map{ |c| all_ascii_to_new_ord[c.ord] }
-        .map{ |o| o.chr }
+        .map{ |c| (all_ascii_to_new_ord[c.ord]).chr }
         .join
     end
 
@@ -89,8 +66,7 @@ module SubstitutionCipher
       document
         .to_s
         .chars
-        .map{ |c| new_ord_to_all_ascii[c.ord] }
-        .map{ |o| o.chr }
+        .map{ |c| (new_ord_to_all_ascii[c.ord]).chr }
         .join
     end
   end
