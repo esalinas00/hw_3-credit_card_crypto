@@ -50,7 +50,7 @@ describe 'Test card info encryption' do
     it 'should decrypt text' do
       enc = DoubleTranspositionCipher.encrypt(@cc, @key)
       dec = DoubleTranspositionCipher.decrypt(enc, @key)
-      dec.must_equal @cc.to_s
+      dec[0,@cc.to_s.length].must_equal @cc.to_s
     end
   end
 
